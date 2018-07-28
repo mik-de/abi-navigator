@@ -1,0 +1,124 @@
+/* https://www.w3schools.com/howto/howto_css_outline_buttons.asp */
+
+button { /* new default style for <button/> */
+    border: 2px solid black;
+    background-color: white;
+    color: black;
+    padding: 3px 6px;
+/*    float:left; */
+    margin: 2px 2px;
+    font-size: 16px;
+    cursor: pointer;
+/*    white-space: nowrap;*/
+}
+
+#sidebar /* fixed left sidebar */
+{
+	width:40%;
+	float:left; /* TODO Wrap */
+/*	display:inline-block; /* IE6, IE7 compatibility only */
+}
+
+#videos_outer
+{
+   width: 60%;
+    /* Firefox */
+    display: -moz-box;
+    -moz-box-pack: center;
+    -moz-box-align: center;
+    /* Safari and Chrome */
+    display: -webkit-box;
+    -webkit-box-pack: center;
+    -webkit-box-align: center;
+    /* W3C */
+    display: box;
+    box-pack: center;
+    box-align: center;
+    text-align: center;
+}
+
+#videos {
+	margin: 0 auto;
+	display:table-cell;
+}
+
+#video {
+	padding:3px;
+}
+
+.nav {
+    padding: 2px 2px;
+    text-align: center;
+
+}
+
+.nav_buttons {
+    padding: 3px 6px;
+}
+
+
+span.toggle_group {
+  display: inline-block;
+}
+
+button.success { /* Green */
+    border-color: #4CAF50;
+    color: green;
+}
+
+button.success_not_selected { /* Green */
+    border-color: #4CAF50;
+    color: green;
+    margin-right: 0;
+}
+button.success_selected { /* Green */
+	border-color: #4CAF50;
+	background-color: #4CAF50;
+	color: white;
+    margin-right: 0;
+}
+button.success_toggle { /* Green */
+	border-color: #4CAF50;
+	background-color: #4CAF50;
+	color: white;
+    margin-left: 0;
+}
+
+button.info_not_selected {/* Blue */
+    border-color: #2196F3;
+    color: dodgerblue;
+    margin-left: 0;
+}
+
+button.info_selected {/* Blue */
+    border-color: #2196F3;
+    background-color: #2196F3;
+    color: white;
+    margin-left: 0;
+}
+
+.warning { /* Orange */
+    border-color: #ff9800;
+    color: orange;
+}
+.warning:hover {
+    background: #ff9800;
+    color: white;
+}
+
+.danger { /* Red */
+    border-color: #f44336;
+    color: red
+}
+.danger:hover {
+    background: #f44336;
+    color: white;
+}
+
+.default { /* Gray */
+    border-color: #e7e7e7;
+    color: black;
+}
+.default:hover {
+    background: #e7e7e7;
+}

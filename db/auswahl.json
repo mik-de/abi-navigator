@@ -1,0 +1,18 @@
+{
+	"Baden-Würtemberg" : "bw",
+	"Bayern" : "by",
+	"Berlin" : "be",
+	"Brandenburg" : "bb",
+	"Bremen" : "hb",
+	"Hamburg" : "hh",
+	"Hessen" : "he",
+	"Mecklenburg-Vorpommern" : "mv",
+	"Niedersachsen" : "ni",
+	"Nordrhein-Westfalen" : "nrw",
+	"Rheinland-Pfalz" : "rp",
+	"Saarland" : "sl",
+	"Sachsen" : "sn",
+	"Sachsen-Anhalt" : "st",
+	"Schleswig-Holstein" : "sh",
+	"Thüringen" : "th"
+}
