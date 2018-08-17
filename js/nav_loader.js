@@ -1,3 +1,4 @@
+// TODO REWORK Dokumentation
 // Navigation: Bundesland > Schule > Klasse > Fach > Thema > Stichwort
 // Pfad: by__gym__k10__mathe__kk__pi / by/gym/k10/mathe/kk/pi
 // Dateistruktur:
@@ -13,6 +14,7 @@
 var g_hierarchien = [ "Bundesland", "Schule", "Klasse", "Fach", "Thema", "Stichwort" ]; // hierarchie als linked list...
 var g_hierarchie_pfad = [];
 var g_stichwort_ids = [];
+var g_nav_hierarchie = -1; /// Gibt aktuell angezeigte Hierarchie Ebene an. // TODO -1 für Wurzel? // TODO Rework Zählung der Hierarchie Ebenen
 
 //
 function pageLoaded()
@@ -39,21 +41,21 @@ function pageLoaded()
 		var final_pfad="";
 		var pfad_url_json = null; 
 		var hierarchie = 0;
-		for(num in pfad)
+		for(num in pfad) // TODO final "/" in url
 		{
 			if(num != 0)
 			{
 			//	continue;
 				g_hierarchie_pfad.push(pfad[num]);
 			}
-			hierarchie = num-1;
+			hierarchie = num; // TODO -1
 			console.log(pfad[num]);
 			var [url_json, final_pfad] = resolveJsonUrl(g_hierarchie_pfad, "auswahl");
 			var nav_layer =	createNavLayer(nav_layers, g_hierarchien[hierarchie]);
 			// TODO nav path
 			if(num != 0)
 			{
-				addNavPath(nav_path, g_hierarchie_pfad[g_hierarchie_pfad.length-1], pfad_url_json);
+				addNavPath(nav_path, g_hierarchien[hierarchie], g_hierarchie_pfad[hierarchie-1], pfad_url_json);
 			}
 			if(g_hierarchie_pfad.length < (g_hierarchien.length-1)) // letzte Hierarchie Ebene?
 			{
@@ -66,6 +68,7 @@ function pageLoaded()
 			pfad_url_json = url_json
 		}
 		showButtons(g_hierarchien[hierarchie]);
+		g_nav_hierarchie = hierarchie;
 		updatePermalink(final_pfad);
 	}
 }
@@ -102,9 +105,9 @@ function manageButtons(element)
              nav_layer = nav_layer.parentElement;
 	}
 	var nav_layers = nav_layer.parentElement;
-	var hierarchie_level = g_hierarchien.indexOf(nav_layer.id) + 1; // TODO check hierarchie_level for -1
+	var hierarchie_level = g_hierarchien.indexOf(nav_layer.id) + 1; // Neue hierarchie ebene // TODO check hierarchie_level for -1
 	console.log("Hierarchie level: " + hierarchie_level + " / Element Id: " + nav_layer.id + " / Button Id: " + element.id);	
-	if(hierarchie_level <  (g_hierarchien.length-1)) // Hierarchien aufklappen oder Videos listen
+	if(hierarchie_level <  g_hierarchien.length) // Hierarchien aufklappen oder Videos listen
 	{
 		var videos = document.getElementById("videos");
 		removeAllChildren(videos); // Videos wegräumen
@@ -118,14 +121,17 @@ function manageButtons(element)
 			clean_nav_layer = next;
 		}
 		
-		while(hierarchie_level < g_hierarchie_pfad.length) // remove lower nav levels from hierarchie 
+		while(hierarchie_level <= g_hierarchie_pfad.length) // remove lower nav levels from hierarchie 
 		{
 			g_hierarchie_pfad.pop();
+			nav_path.removeChild(nav_path.lastElementChild);
 		}
+		console.log("manageButtons():", g_hierarchie_pfad);
+				
 
 		var [path_url_json, pfad] = resolveJsonUrl(g_hierarchie_pfad, "auswahl");
 		g_hierarchie_pfad.push(element.id);
-		addNavPath(nav_path, g_hierarchie_pfad[g_hierarchie_pfad.length-1], path_url_json);
+		addNavPath(nav_path, g_hierarchien[hierarchie_level], g_hierarchie_pfad[hierarchie_level-1], path_url_json);
 		var next_nav_layer = createNavLayer(nav_layers, g_hierarchien[hierarchie_level]);
 		console.log(nav_layer);
 		console.log(next_nav_layer);
@@ -133,7 +139,7 @@ function manageButtons(element)
 
 		console.log(next_nav_layer.id);
 		var [url_json, pfad] = resolveJsonUrl(g_hierarchie_pfad, "auswahl");
-		if(hierarchie_level < (g_hierarchien.length-2))
+		if(hierarchie_level < (g_hierarchien.length-1))
 		{
 			loadLayerButtons(next_nav_layer, url_json);
 		}
@@ -141,14 +147,14 @@ function manageButtons(element)
 		{
 			loadToggleButtons(next_nav_layer, url_json);
 		}
-		// TODO update nav path
 		
 		
-		if(hierarchie_level >= 1) // Schadet nicht, auch bei Rückwärtsnavigation
+		if(hierarchie_level > 0) // Schadet nicht, auch bei Rückwärtsnavigation
 		{
 			showButtons(g_hierarchien[hierarchie_level-1], false);
 		}
 		showButtons(g_hierarchien[hierarchie_level]);
+		g_nav_hierarchie = hierarchie_level;
 		
 		updatePermalink(pfad);
 		g_stichwort_ids = []; // reset toggle_status
@@ -185,6 +191,28 @@ function manageButtons(element)
 	}
 }
 
+// hierarchie : Hierachie Ebene die angezeigt werden soll.
+function navButton(hierarchie)
+{
+	var hierarchie_level = 0;
+	if( typeof hierarchie !== "undefined" ) // Wurzel
+	{
+		for(num in g_hierarchien)
+		{
+			if(g_hierarchien[num] === hierarchie)
+			{
+				hierarchie_level = num;
+				break;
+			}
+		}
+	}
+	if(g_nav_hierarchie !== -1)
+	{
+		showButtons(g_hierarchien[g_nav_hierarchie], false);
+	}
+	showButtons(g_hierarchien[hierarchie_level]);
+	g_nav_hierarchie = hierarchie_level;
+}
 
 function selectButton(element, selected)
 {
@@ -380,7 +408,8 @@ function loadLayerButtons(parentElement, url_json)
 
 // TODO JSON cache?
 
-function addNavPath(parentElement, id, url_json)
+// Nav Path ist immer eins hintendran iaw id
+function addNavPath(parentElement, hierarchie, id, url_json)
 {
 	console.log("addNavPath",id);
 	fetchJson(url_json, function(status, json)
@@ -391,7 +420,7 @@ function addNavPath(parentElement, id, url_json)
 			{
 				if(json[element] === id)  // find element
 				{
-					var elementButton = createButton(element, id, "");
+					var elementButton = createButton(element, id, "", "navButton(\"" + hierarchie + "\")");
 					parentElement.appendChild(elementButton);
 					break;
 				}
@@ -413,8 +442,9 @@ function createNavLayer(parentElement, id)
 	return nav_layer;
 }
 
+
 //
-function createButton(label, id, className)
+function createButton(label, id, className, functionName)
 {
 	var button = document.createElement("button");
 	var text = document.createTextNode(label);
@@ -422,8 +452,12 @@ function createButton(label, id, className)
 	{
 		className = "success";
 	}
+	if( typeof functionName === "undefined" )
+	{
+		functionName = "manageButtons(this)";
+	}
 	button.id = id;
-	button.setAttribute("onclick", "manageButtons(this)");
+	button.setAttribute("onclick", functionName);
 	button.appendChild(text);
 	button.className = className;
 	return button;
