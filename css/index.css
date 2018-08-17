@@ -12,11 +12,26 @@ button { /* new default style for <button/> */
 /*    white-space: nowrap;*/
 }
 
-#sidebar /* fixed left sidebar */
+hr {
+  color : #2554C7;
+}
+
+
+#sidebar /* fixed left sidebar */ /* TODO DEPRECATED */
 {
 	width:40%;
 	float:left; /* TODO Wrap */
 /*	display:inline-block; /* IE6, IE7 compatibility only */
+}
+
+#topbar /* topbar for navigation */
+{
+	display:block;
+/*	display:inline-block; /* IE6, IE7 compatibility only */
+}
+
+.nav_path {
+	/* TODO nix? */
 }
 
 #videos_outer
@@ -46,11 +61,17 @@ button { /* new default style for <button/> */
 	padding:3px;
 }
 
-.nav {
+.nav { /* TODO DEPRECATD */
     padding: 2px 2px;
     text-align: center;
 
 }
+
+.top_nav {
+    padding: 2px 2px;
+    text-align: center;
+}
+
 
 .nav_buttons {
     padding: 3px 6px;

@@ -11,13 +11,15 @@
 // Thema 
 
 var g_hierarchien = [ "Bundesland", "Schule", "Klasse", "Fach", "Thema", "Stichwort" ]; // hierarchie als linked list...
-var g_hierarchie = [];
+var g_hierarchie_pfad = [];
 var g_stichwort_ids = [];
 
 //
 function pageLoaded()
 {
 	var nav_layers = document.getElementById("nav_layers");
+	var nav_path = document.getElementById("nav_path");
+	console.log(nav_layers);
 	var url = new URL(window.location.href);
 	var ref_parameter = url.searchParams.get("ref")
 	if(ref_parameter !== null)
@@ -28,26 +30,32 @@ function pageLoaded()
 
 	if(ref_parameter === null || pfad.length == 0)
 	{
-		var [url_json, pfad] = resolveJsonUrl(g_hierarchie, "auswahl");
+		var [url_json, pfad] = resolveJsonUrl(g_hierarchie_pfad, "auswahl");
 		var nav_layer =	createNavLayer(nav_layers, g_hierarchien[0]);
 		loadLayerButtons(nav_layer, url_json);
 	}
 	else
 	{ // ref Parameter gesetzt
 		var final_pfad="";
+		var pfad_url_json = null; 
+		var hierarchie = 0;
 		for(num in pfad)
 		{
 			if(num != 0)
 			{
 			//	continue;
-				g_hierarchie.push(pfad[num]);
+				g_hierarchie_pfad.push(pfad[num]);
 			}
-			var hierarchie = num-1;
-			console.log(pfad[num])
-
-			var [url_json, final_pfad] = resolveJsonUrl(g_hierarchie, "auswahl");
+			hierarchie = num-1;
+			console.log(pfad[num]);
+			var [url_json, final_pfad] = resolveJsonUrl(g_hierarchie_pfad, "auswahl");
 			var nav_layer =	createNavLayer(nav_layers, g_hierarchien[hierarchie]);
-			if(g_hierarchie.length < (g_hierarchien.length-1))
+			// TODO nav path
+			if(num != 0)
+			{
+				addNavPath(nav_path, g_hierarchie_pfad[g_hierarchie_pfad.length-1], pfad_url_json);
+			}
+			if(g_hierarchie_pfad.length < (g_hierarchien.length-1)) // letzte Hierarchie Ebene?
 			{
 				loadLayerButtons(nav_layer, url_json);
 			}
@@ -55,9 +63,28 @@ function pageLoaded()
 			{
 				loadToggleButtons(nav_layer, url_json);
 			}			
-			// loadLayerButtons(nav_layer, url_json);
+			pfad_url_json = url_json
 		}
+		showButtons(g_hierarchien[hierarchie]);
 		updatePermalink(final_pfad);
+	}
+}
+
+function showButtons(hierarchie, display)
+{
+	if(typeof display === "undefined")
+	{
+		display = true;
+	}
+	console.log(hierarchie);
+	var nav_layer = document.getElementById(hierarchie);
+	if(display === true)
+	{
+		nav_layer.style.display = "block";
+	}
+	else
+	{
+		nav_layer.style.display = "none";
 	}
 }
 
@@ -65,9 +92,10 @@ function pageLoaded()
 function manageButtons(element)
 {
 	console.log(element)
-	console.log(g_hierarchie)
+	console.log(g_hierarchie_pfad)
 // TODO Error handling
 //	if(hierarchie_level
+	var nav_path = document.getElementById("nav_path");
 	var nav_layer = element.parentElement;
 	if(nav_layer.tagName.toLowerCase() === "span") // span block of toggle buttons
 	{
@@ -79,40 +107,50 @@ function manageButtons(element)
 	if(hierarchie_level <  (g_hierarchien.length-1)) // Hierarchien aufklappen oder Videos listen
 	{
 		var videos = document.getElementById("videos");
-		removeAllChildren(videos); // clear
-		var clean_nav_layer = nav_layer.previousElementSibling; /////////
+		removeAllChildren(videos); // Videos wegräumen
+		var clean_nav_layer = nav_layer.previousElementSibling; // Darunterliegende Nav Layer entfernen
 		var next;
-		while(clean_nav_layer !== null) // remove lower level nav layers from DOM
+		while(clean_nav_layer !== null)
 		{
 			next = clean_nav_layer.previousElementSibling
 			console.log("Entferne Layer mit ID: " + clean_nav_layer.id);
 			nav_layers.removeChild(clean_nav_layer);
 			clean_nav_layer = next;
 		}
+		
+		while(hierarchie_level < g_hierarchie_pfad.length) // remove lower nav levels from hierarchie 
+		{
+			g_hierarchie_pfad.pop();
+		}
+
+		var [path_url_json, pfad] = resolveJsonUrl(g_hierarchie_pfad, "auswahl");
+		g_hierarchie_pfad.push(element.id);
+		addNavPath(nav_path, g_hierarchie_pfad[g_hierarchie_pfad.length-1], path_url_json);
 		var next_nav_layer = createNavLayer(nav_layers, g_hierarchien[hierarchie_level]);
 		console.log(nav_layer);
 		console.log(next_nav_layer);
 		console.log(element.id);
-		while(hierarchie_level < g_hierarchie.length) // remove lower levels from hierarchie 
-		{
-			g_hierarchie.pop();
-		}
-		g_hierarchie.push(element.id);
 
-		if(next_nav_layer !== null) // TODO why ?
+		console.log(next_nav_layer.id);
+		var [url_json, pfad] = resolveJsonUrl(g_hierarchie_pfad, "auswahl");
+		if(hierarchie_level < (g_hierarchien.length-2))
 		{
-			console.log(next_nav_layer.id);
-			var [url_json, pfad] = resolveJsonUrl(g_hierarchie, "auswahl");
-			if(hierarchie_level < (g_hierarchien.length-2))
-			{
-				loadLayerButtons(next_nav_layer, url_json);
-			}
-			else
-			{
-				loadToggleButtons(next_nav_layer, url_json);
-			}
-			updatePermalink(pfad);
+			loadLayerButtons(next_nav_layer, url_json);
 		}
+		else
+		{
+			loadToggleButtons(next_nav_layer, url_json);
+		}
+		// TODO update nav path
+		
+		
+		if(hierarchie_level >= 1) // Schadet nicht, auch bei Rückwärtsnavigation
+		{
+			showButtons(g_hierarchien[hierarchie_level-1], false);
+		}
+		showButtons(g_hierarchien[hierarchie_level]);
+		
+		updatePermalink(pfad);
 		g_stichwort_ids = []; // reset toggle_status
 	}
 	else
@@ -143,9 +181,10 @@ function manageButtons(element)
 			g_stichwort_ids = [ element.id ];			
 		}
 		// loadVideos(g_hierarchie, g_toggle_status);
-		loadVideos(g_hierarchie, g_stichwort_ids);
+		loadVideos(g_hierarchie_pfad, g_stichwort_ids);
 	}
 }
+
 
 function selectButton(element, selected)
 {
@@ -312,7 +351,6 @@ function loadToggleButtons(parentElement, url_json)
 				parentElement.appendChild(toggle_group);
 			}
 			var element_ruler = document.createElement("hr");
-			element_ruler.style.color = "#2554C7";
 			parentElement.appendChild(element_ruler);
 		}
 	});
@@ -325,14 +363,12 @@ function loadLayerButtons(parentElement, url_json)
 	{
 		if( status === null)
 		{
-
 			for(element in json)
 			{
 				var elementButton = createButton(element, json[element]);
 				parentElement.appendChild(elementButton);
 			}
 			var element_ruler = document.createElement("hr");
-			element_ruler.style.color = "#2554C7";
 			parentElement.appendChild(element_ruler);
 		}
 	});
@@ -344,12 +380,36 @@ function loadLayerButtons(parentElement, url_json)
 
 // TODO JSON cache?
 
+function addNavPath(parentElement, id, url_json)
+{
+	console.log("addNavPath",id);
+	fetchJson(url_json, function(status, json)
+	{
+		if( status === null)
+		{
+			for(element in json)
+			{
+				if(json[element] === id)  // find element
+				{
+					var elementButton = createButton(element, id, "");
+					parentElement.appendChild(elementButton);
+					break;
+				}
+			}
+		}
+	});
+	
+	
+}
+
 function createNavLayer(parentElement, id)
 {
 	var nav_layer = document.createElement("div");
 	nav_layer.id = id;
 	nav_layer.setAttribute("class", "nav_layer");
+	nav_layer.style.display = "none";
 	parentElement.insertBefore(nav_layer, parentElement.firstElementChild);
+	
 	return nav_layer;
 }
 
