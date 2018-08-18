@@ -416,7 +416,7 @@ function addNavPath(parentElement, hierarchie, id, url_json)
 			{
 				if(json[element] === id)  // find element
 				{
-					var elementButton = createButton(element, id, "", "navButton(\"" + hierarchie + "\")");
+					var elementButton = createButton(element, id, "nav_path", "navButton(\"" + hierarchie + "\")");
 					parentElement.appendChild(elementButton);
 					break;
 				}
