@@ -346,7 +346,7 @@ function createVideoElements(video_list)
 	{
 		var youtube_id = video_list[num]["video"];
 		var youtube_element =  document.createElement('div');
-		var youtube_iframe = "<iframe width=\"560\" height=\"315\" src=\"";
+		var youtube_iframe = "<iframe src=\"";
 		youtube_iframe += "https://www.youtube-nocookie.com/embed/" + youtube_id + "?rel=0\"";
 		youtube_iframe += "frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe>";
 		youtube_element.innerHTML = youtube_iframe;
@@ -378,8 +378,6 @@ function loadToggleButtons(parentElement, url_json)
 				toggle_group.appendChild(toggle_button);
 				parentElement.appendChild(toggle_group);
 			}
-			var element_ruler = document.createElement("hr");
-			parentElement.appendChild(element_ruler);
 		}
 	});
 }
@@ -396,8 +394,6 @@ function loadLayerButtons(parentElement, url_json)
 				var elementButton = createButton(element, json[element]);
 				parentElement.appendChild(elementButton);
 			}
-			var element_ruler = document.createElement("hr");
-			parentElement.appendChild(element_ruler);
 		}
 	});
 }

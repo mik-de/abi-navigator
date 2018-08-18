@@ -4,7 +4,7 @@ button { /* new default style for <button/> */
     border: 2px solid black;
     background-color: white;
     color: black;
-    padding: 3px 6px;
+    padding: 8px 6px;
 /*    float:left; */
     margin: 2px 2px;
     font-size: 16px;
@@ -30,13 +30,18 @@ hr {
 /*	display:inline-block; /* IE6, IE7 compatibility only */
 }
 
-.nav_path {
+#nav_path {
 	/* TODO nix? */
+    background-color: #dbdb70;
+}
+
+#nav_layers {
+	/* TODO nix? */
+    background-color: #CCFF66;
 }
 
 #videos_outer
 {
-   width: 60%;
     /* Firefox */
     display: -moz-box;
     -moz-box-pack: center;
@@ -143,3 +148,14 @@ button.info_selected {/* Blue */
 .default:hover {
     background: #e7e7e7;
 }
+
+iframe {
+    height: 216;
+    width: 384;
+}
+
+#permalink {
+    text-align: center;
+}
+
+
