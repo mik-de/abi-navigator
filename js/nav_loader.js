@@ -21,6 +21,7 @@ function pageLoaded()
 {
 	var nav_layers = document.getElementById("nav_layers");
 	var nav_path = document.getElementById("nav_path");
+	var hierarchie = 0;
 	console.log(nav_layers);
 	var url = new URL(window.location.href);
 	var ref_parameter = url.searchParams.get("ref")
@@ -40,7 +41,6 @@ function pageLoaded()
 	{ // ref Parameter gesetzt
 		var final_pfad="";
 		var pfad_url_json = null; 
-		var hierarchie = 0;
 		for(num in pfad) // TODO final "/" in url
 		{
 			if(num != 0)
@@ -67,10 +67,10 @@ function pageLoaded()
 			}			
 			pfad_url_json = url_json
 		}
-		showButtons(g_hierarchien[hierarchie]);
-		g_nav_hierarchie = hierarchie;
 		updatePermalink(final_pfad);
 	}
+	showButtons(g_hierarchien[hierarchie]);
+	g_nav_hierarchie = hierarchie;
 }
 
 function showButtons(hierarchie, display)
