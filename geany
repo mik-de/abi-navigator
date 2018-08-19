@@ -27,12 +27,12 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=1
-FILE_NAME_0=273;HTML;0;EUTF-8;1;1;0;%2Fhome%2Fmik%2Fwww%2Findex.html;0;4
-FILE_NAME_1=738;Javascript;0;EUTF-8;1;1;0;%2Fhome%2Fmik%2Fwww%2Fjs%2Fnav_loader.js;0;4
-FILE_NAME_2=355;CSS;0;EUTF-8;1;1;0;%2Fhome%2Fmik%2Fwww%2Fcss%2Findex.css;0;4
+current_page=2
+FILE_NAME_0=302;HTML;0;EUTF-8;1;1;0;%2Fhome%2Fmik%2Fwww%2Findex.html;0;4
+FILE_NAME_1=11458;Javascript;0;EUTF-8;1;1;0;%2Fhome%2Fmik%2Fwww%2Fjs%2Fnav_loader.js;0;4
+FILE_NAME_2=2139;CSS;0;EUTF-8;1;1;0;%2Fhome%2Fmik%2Fwww%2Fcss%2Findex.css;0;4
 FILE_NAME_3=0;HTML;0;EUTF-8;1;1;0;%2Fhome%2Fmik%2Fwww%2Fstichworter_verwalten.html;0;4
-FILE_NAME_4=0;Javascript;0;EUTF-8;1;1;0;%2Fhome%2Fmik%2Fwww%2Fjs%2Fstichworter_verwalten.js;0;4
+FILE_NAME_4=4175;Javascript;0;EUTF-8;1;1;0;%2Fhome%2Fmik%2Fwww%2Fjs%2Fstichworter_verwalten.js;0;4
 FILE_NAME_5=0;HTML;0;EUTF-8;1;1;0;%2Fhome%2Fmik%2Fwww%2Fvideos_verwalten.html;0;4
 FILE_NAME_6=0;Javascript;0;EUTF-8;1;1;0;%2Fhome%2Fmik%2Fwww%2Fjs%2Fvideos_verwalten.js;0;4
-FILE_NAME_7=0;CSS;0;EUTF-8;1;1;0;%2Fhome%2Fmik%2Fwww%2Fcss%2Fverwalten.css;0;4
+FILE_NAME_7=522;CSS;0;EUTF-8;1;1;0;%2Fhome%2Fmik%2Fwww%2Fcss%2Fverwalten.css;0;4
