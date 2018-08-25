@@ -1,9 +1,13 @@
 {
-	"Pi" : "pi",
-	"Bogenmaß" : "phi",
-	"Winkel" : "wink",
-	"Fläche" : "flach",
-	"Segment" : "flach",
-	"Volumen" : "vol"
+    "Pi": "pi",
+    "Bogenmaß": "phi",
+    "Winkel": "wink",
+    "Kreisfläche": "flach",
+    "Kreisumfang" : "umf",    
+    "Kreisbogen": "bog",
+    "Kreissektor": "sek",
+    "Kreisring": "ring",
+    "Kreissegment": "seg",
+    "Kugelfläche" : "hulle",
+    "Kugelvolumen": "vol"
 }
-
