@@ -1,12 +1,12 @@
 {
+	"Exponentialfunktion" : "exp",
+	"Graph" : "graph",
 	"Wachstumsprozess" : "wachs",
 	"Abklingprozess" : "kling",
 	"Radioaktivität" : "radio",
-	"Exponentialfunktion" : "exp",
-	"Graph" : "graph",
-	"Logarithmus" : "log",
+	"natürliche Exponentialfunktion" : "natur",
 	"Potenzgesetze" : "potenz",
 	"Gleichungen" : "gleich",
-	"natürliche Exponentialfunktion" : "natur"
+	"Logarithmus" : "log"
 }
 

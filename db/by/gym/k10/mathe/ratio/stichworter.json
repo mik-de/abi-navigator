@@ -1,0 +1,51 @@
+{
+    "quad": [
+        "83935917-49d5-4169-a47f-c94962496a2d",
+        "a8a4c52c-e860-4936-968a-364e1ae852f8",
+        "d952fcc0-4edf-416f-aa39-f7c41d30010e",
+        "bf4c16b5-1de5-43b3-aeda-d7a97f825353",
+        "ebac67c8-6f55-4270-8449-96d80e47de2a",
+        "6643dbef-bd72-4db5-aea2-22ecd7bc1d2d",
+        "dc743371-63ef-4dbe-b9b6-7ab6029ead12",
+        "0ea21f6c-a607-4463-8ae1-4f69ee3ad329"
+    ],
+    "pot": [
+        "b3976b6d-9153-4e2d-a4d9-fc4bea41e5c8",
+        "2a80b766-196d-4816-86e5-bc15960bda45",
+        "0db07280-2dee-4183-97e7-ceceaa4765eb",
+        "33ff093c-75c6-4036-8567-83cb988b9d60",
+        "0b849132-55c7-4e49-bba3-3cc0b9343570",
+        "c1b1e224-df46-46c1-afc0-edc51103f735"
+    ],
+    "funk": [
+        "611a6ac2-f2d1-46cb-bc3d-70e4714c2ef2",
+        "4c2b0821-b69b-4956-b952-e7b3128c7237",
+        "d97211e4-7a27-420a-b670-945c747d1653",
+        "59c394c9-73f5-483f-9c2d-6f58840442e7"
+    ],
+    "graph": [
+        "d70f56b8-9c93-44ed-b6a0-abae77709542",
+        "fcb240c9-27ff-468a-98fe-36316de6da09",
+        "073bfb08-2660-4cec-a1d4-a248e7fe9d13",
+        "f535a25d-1dee-47ed-b5a8-f4c60eb2b0a6",
+        "cd94987a-1fe6-4049-bfa8-8d2ba8269155"
+    ],
+    "null": [
+        "57949ff5-d68e-40c6-bc7f-ffc93506bac0",
+        "dc4b2dfc-bd5c-479d-9f6e-250f747e88e1",
+        "2f10a0ba-c88f-454b-bc5b-2ebd7e4221ec",
+        "3a9f70b6-30f4-41e0-89c3-88cc9ae88483",
+        "a8c3237f-9cc4-43c9-953e-f363a98af2cf"
+    ],
+    "div": [
+        "d07bb7f5-6397-4477-819c-14a1c7cc8050",
+        "98dd70c6-180f-4869-bb5e-facbbc719e88",
+        "0e636744-c04f-4a74-9560-69e4dcad80fb",
+        "c5996edf-6f5b-4447-91c9-9c1a5400e2a3"
+    ],
+    "biquad": [
+        "efec67f5-bb31-4d9b-b15e-9eeb941002a6",
+        "75c3d274-a2ac-4b8a-8cd6-fe5fec41229e",
+        "a0c5420f-6dda-49ea-b767-b73dc4bd0e22"
+    ]
+}

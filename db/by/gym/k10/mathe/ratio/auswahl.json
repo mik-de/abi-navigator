@@ -1,15 +1,10 @@
 {
-	"Quadratische Funktion" : "quad",
+        "Quadratische Funktion" : "quad",
 	"Potentzfunktionen" : "pot",
 	"Ganzrationale Funktionen" : "funk",
 	"Graph" : "graph",
-	"Skizzieren" : "skiz",
 	"Nullstellen" : "null",
 	"Polynomdivision" : "div",
-	"Globalverhalten" : "global",
-	"Definitionsbereich" : "def",
-	"Lösungsverfahren" : "loes",
-	"Biquadratisch" : "biquad",
-	"Polynomgleichung@@++" : "gleich"
+	"Biquadratisch" : "biquad"
 }
 
