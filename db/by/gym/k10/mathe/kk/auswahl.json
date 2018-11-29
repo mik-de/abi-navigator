@@ -1,13 +1,8 @@
 {
-    "Pi": "PLS5VdiU0mGpXBFOkRe4vaoVLzq6twCIIE",
-    "Bogenmaß": "PLS5VdiU0mGpWvE1uDbZYP3zdy06XrbBwa",
-    "Winkel": "PLS5VdiU0mGpXBFOkRe4vaoVLzq6twCIIE",
-    "Kreisfläche": "PLS5VdiU0mGpXBFOkRe4vaoVLzq6twCIIE",
-    "Kreisumfang" : "PLS5VdiU0mGpWvE1uDbZYP3zdy06XrbBwa",
-    "Kreisbogen": "PLS5VdiU0mGpXBFOkRe4vaoVLzq6twCIIE",
-    "Kreissektor": "PLS5VdiU0mGpWvE1uDbZYP3zdy06XrbBwa",
-    "Kreisring": "PLS5VdiU0mGpXBFOkRe4vaoVLzq6twCIIE",
-    "Kreissegment": "PLS5VdiU0mGpWvE1uDbZYP3zdy06XrbBwa",
-    "Kugelfläche" : "PLS5VdiU0mGpXBFOkRe4vaoVLzq6twCIIE",
-    "Kugelvolumen": "PLS5VdiU0mGpWvE1uDbZYP3zdy06XrbBwa"
+    "Pi": "PLS5VdiU0mGpX1p6f2t35FnocWRis2M5dL",
+    "Bogenmaß": "PLS5VdiU0mGpUAb4bLLfM4k_wy1mNa1i9k",
+    "Kreisfläche und -umfang": "PLS5VdiU0mGpXS0lzyeqNzdQW3J5-FPUvG",
+    "Kreisbogen und -sektor": "PLS5VdiU0mGpUQ0JKfEb9oEkI-rtKicKBH",
+    "Kreissegment": "PLS5VdiU0mGpXOJY-82vpBMGqkhvvM5ylG",
+    "Kugelvolumen und -fläche" : "PLS5VdiU0mGpVdQgXJcLOwFPNP7Sn_7mVI"
 }
