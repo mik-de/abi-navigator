@@ -163,6 +163,7 @@ function manageButtons(element)
 	{
 		// Toggle buttons
 		// Toggeln nur bei Toggle id
+		
 		if(element.id.endsWith("__toggle"))
 		{
 			var id = element.id.replace("__toggle", "");
@@ -251,32 +252,44 @@ function updatePermalink(pfad)
 	link.text = "permalink";
 }
 
-//
+// TODO REWORK!!!!// TODO REWORK!!!!// TODO REWORK!!!!// TODO REWORK!!!!// TODO REWORK!!!!// TODO REWORK!!!!
+
+
 function loadVideos(hierarchie, stichwort_ids)
 {
-	var [url_json, dummy_pfad] = resolveJsonUrl(hierarchie, "stichworter");
-	fetchJson(url_json, function(status, json)
+	console.log("loadVideos "  + stichwort_ids);
+	// for each stichwort_id fetch video ids
+	// promote videos that match all video ids
+	// TODO fix Toogle
+	var pl_id = stichwort_ids[0];
+	var key = "AIzaSyCClib9G8pB2vsC-29Bnzhw58w5cEL66Mk";
+	var url = "https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails&maxResults=50&playlistId=";
+	url += pl_id;
+	url += "&key=" + key;
+	// fetch playlist...
+	fetchJson(url, function (status, response)
 	{
 		if( status === null)
 		{
-			var stichwort_json = json;
-			var [url_json, dummy_pfad] = resolveJsonUrl(hierarchie, "videos");
-			fetchJson(url_json, function(status, json)
+	
+			var body = document.getElementById("body");
+	
+			var items = response.items;
+			video_ids = [];
+			for(element in items)
 			{
-				if( status === null)
-				{
-					var videos_json = json;
-					var video_list = makeList(stichwort_ids, videos_json, stichwort_json);
-					var videos_next = createVideoElements(video_list);
-					console.log("Done!");
-					var videos = document.getElementById("videos");
-					var videos_outer = document.getElementById("videos_outer");
-					videos_outer.replaceChild(videos_next, videos);
-				}
-			});
+				video_ids.push(items[element].contentDetails.videoId);
+			}
+			console.log(video_ids);
+			var videos_next = createVideoElements(video_ids);
+			console.log("Done!");
+			var videos = document.getElementById("videos");
+			var videos_outer = document.getElementById("videos_outer");
+			videos_outer.replaceChild(videos_next, videos);
 		}
 	});
 }
+
 
 //
 function makeList(stichwort_ids, videos_json, stichwort_json)
@@ -344,7 +357,7 @@ function createVideoElements(video_list)
 	videos.id = "videos";
 	for(num in video_list)
 	{
-		var youtube_id = video_list[num]["video"];
+		var youtube_id = video_list[num];
 		var youtube_element =  document.createElement('div');
 		var youtube_iframe = "<iframe src=\"";
 		youtube_iframe += "https://www.youtube-nocookie.com/embed/" + youtube_id + "?rel=0\"";
