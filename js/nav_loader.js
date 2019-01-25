@@ -13,7 +13,6 @@
 
 var g_hierarchien = [ "Bundesland", "Schule", "Klasse", "Fach", "Thema", "Stichwort" ]; // hierarchie als linked list...
 var g_hierarchie_pfad = [];
-var g_stichwort_ids = [];
 var g_nav_hierarchie = -1; /// Gibt aktuell angezeigte Hierarchie Ebene an. // TODO -1 für Wurzel? // TODO Rework Zählung der Hierarchie Ebenen
 
 //
@@ -157,38 +156,20 @@ function manageButtons(element)
 		g_nav_hierarchie = hierarchie_level;
 		
 		updatePermalink(pfad);
-		g_stichwort_ids = []; // reset toggle_status
 	}
 	else
 	{
 		// Toggle buttons
 		// Toggeln nur bei Toggle id
 		
-		if(element.id.endsWith("__toggle"))
-		{
-			var id = element.id.replace("__toggle", "");
-			g_stichwort_ids = toggleListe(id, g_stichwort_ids)
-			var span = element.parentElement;
-			var button = span.firstElementChild;
-			selectButton(button, true); // toggle Button is not bound to stichwort_ids
-		}
-		else
 		{
 			// de toggle andere
-			var clean_toggle = nav_layer.lastElementChild;
-			clean_toggle = clean_toggle.previousElementSibling; // ingoriere <hr>
-			console.log("Cleaning " + nav_layer.id);
-			while(clean_toggle !== null)
-			{
-				selectButton(clean_toggle.firstElementChild, false);
-				clean_toggle = clean_toggle.previousElementSibling;
-			}
+
 
 			selectButton(element, true); // toggle Button is not bound to stichwort_ids
-			g_stichwort_ids = [ element.id ];			
 		}
 		// loadVideos(g_hierarchie, g_toggle_status);
-		loadVideos(g_hierarchie_pfad, g_stichwort_ids);
+		loadVideos(g_hierarchie_pfad, element.id);
 	}
 }
 
@@ -227,15 +208,6 @@ function selectButton(element, selected)
 	}
 }
 
-function toggleListe(id, toggle_liste)
-{
-	if(! toggle_liste.includes(id))
-	{
-		toggle_liste.push(id);
-	}
-	console.log(toggle_liste);
-	return toggle_liste;
-}
 
 function updatePermalink(pfad)
 {
@@ -255,13 +227,13 @@ function updatePermalink(pfad)
 // TODO REWORK!!!!// TODO REWORK!!!!// TODO REWORK!!!!// TODO REWORK!!!!// TODO REWORK!!!!// TODO REWORK!!!!
 
 
-function loadVideos(hierarchie, stichwort_ids)
+function loadVideos(hierarchie, stichwort_id)
 {
-	console.log("loadVideos "  + stichwort_ids);
+	console.log("loadVideos "  + stichwort_id);
 	// for each stichwort_id fetch video ids
 	// promote videos that match all video ids
 	// TODO fix Toogle
-	var pl_id = stichwort_ids[0];
+	var pl_id = stichwort_id;
 	var key = "AIzaSyCClib9G8pB2vsC-29Bnzhw58w5cEL66Mk";
 	var url = "https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails&maxResults=50&playlistId=";
 	url += pl_id;
@@ -382,14 +354,8 @@ function loadToggleButtons(parentElement, url_json)
 
 			for(element in json)
 			{
-				var toggle_group = document.createElement("span");
-				toggle_group.id = "span__" + json[element];
-				toggle_group.className = "toggle_group";
 				var element_button = createButton(element, json[element], "success_not_selected");
-				toggle_group.appendChild(element_button);
-				var toggle_button = createButton("+", json[element]+"__toggle", "success_toggle");
-				toggle_group.appendChild(toggle_button);
-				parentElement.appendChild(toggle_group);
+				parentElement.appendChild(element_button);
 			}
 		}
 	});
