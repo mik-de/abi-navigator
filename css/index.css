@@ -20,7 +20,7 @@ button { /* new default style for <button/> */
 }
 
 #nav_path {
-	width: 800px;
+	width: 780px;
 	margin: 0 auto;
     text-align: left;
 /*    background-color: #f9ffcb;*/
@@ -33,7 +33,7 @@ button { /* new default style for <button/> */
 
 #videos_outer
 {
-	width: 800px;
+	width: 798px;
 	margin: 0 auto;
     /* Firefox */
     display: -moz-box;
@@ -95,8 +95,7 @@ button.success_not_selected {
 }
 
 button.success_selected {
-	border-style: dotted;
-	border-color: gray;
+    border-color: #e18805;
 	background-color: #e18805;
 	color: white;
     margin-right: 0;

@@ -164,25 +164,9 @@ function manageButtons(element)
 		// Toggle buttons
 		// Toggeln nur bei Toggle id
 		
-		if(element.id.endsWith("__toggle"))
-		{
-			var id = element.id.replace("__toggle", "");
-			g_stichwort_ids = toggleListe(id, g_stichwort_ids)
-			var span = element.parentElement;
-			var button = span.firstElementChild;
-			selectButton(button, true); // toggle Button is not bound to stichwort_ids
-		}
-		else
 		{
 			// de toggle andere
-			var clean_toggle = nav_layer.lastElementChild;
-			clean_toggle = clean_toggle.previousElementSibling; // ingoriere <hr>
-			console.log("Cleaning " + nav_layer.id);
-			while(clean_toggle !== null)
-			{
-				selectButton(clean_toggle.firstElementChild, false);
-				clean_toggle = clean_toggle.previousElementSibling;
-			}
+
 
 			selectButton(element, true); // toggle Button is not bound to stichwort_ids
 			g_stichwort_ids = [ element.id ];			
@@ -227,15 +211,6 @@ function selectButton(element, selected)
 	}
 }
 
-function toggleListe(id, toggle_liste)
-{
-	if(! toggle_liste.includes(id))
-	{
-		toggle_liste.push(id);
-	}
-	console.log(toggle_liste);
-	return toggle_liste;
-}
 
 function updatePermalink(pfad)
 {
@@ -382,14 +357,8 @@ function loadToggleButtons(parentElement, url_json)
 
 			for(element in json)
 			{
-				var toggle_group = document.createElement("span");
-				toggle_group.id = "span__" + json[element];
-				toggle_group.className = "toggle_group";
 				var element_button = createButton(element, json[element], "success_not_selected");
-				toggle_group.appendChild(element_button);
-				var toggle_button = createButton("+", json[element]+"__toggle", "success_toggle");
-				toggle_group.appendChild(toggle_button);
-				parentElement.appendChild(toggle_group);
+				parentElement.appendChild(element_button);
 			}
 		}
 	});
