@@ -1,6 +1,3 @@
 {
-	"Gymnasium" : "gym",
-	"FOS/BOS" : "fosbos",
-	"Realschule" : "real",
-	"Hauptschule" : "hs"
+	"Gymnasium" : "gym"
 }
