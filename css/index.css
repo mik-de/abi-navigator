@@ -1,5 +1,12 @@
 /* https://www.w3schools.com/howto/howto_css_outline_buttons.asp */
 
+html, body {
+      height:100%;
+      
+      display:flex;
+      flex-direction:column;
+}
+
 button { /* new default style for <button/> */
     border: 4px solid black;
     background-color: white;
@@ -31,8 +38,13 @@ button { /* new default style for <button/> */
 /*    background-color: #f9ffcb;*/
 }
 
+#outer_outer
+{
+    flex-grow: 1;
+}
 #videos_outer
 {
+    flex-grow: 1;
 	width: 798px;
 	margin: 0 auto;
     /* Firefox */
@@ -144,8 +156,16 @@ iframe {
     width: 384;
 }
 
-#permalink {
+#footer {
     text-align: center;
+    list-style: none;
+    font-size: 66%;
+}
+
+.footer_list {
+display: inline;    
+    padding-right: 5px;
+    padding-left: 5px;
 }
 
 
