@@ -221,7 +221,7 @@ function updatePermalink(pfad)
 	var url = new URL(window.location.href);
 	var url_string = "?ref=" + pfad;
 	link.href = url_string;
-	link.text = "permalink";
+	link.text = "Permalink";
 }
 
 // TODO REWORK!!!!// TODO REWORK!!!!// TODO REWORK!!!!// TODO REWORK!!!!// TODO REWORK!!!!// TODO REWORK!!!!
