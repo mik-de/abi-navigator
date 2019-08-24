@@ -533,4 +533,3 @@ function makeList(stichwort_ids, videos_json, stichwort_json)
 }
 
 
-
