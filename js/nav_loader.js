@@ -85,6 +85,7 @@ function showButtons(hierarchie, display)
 		display = true;
 	}
 	console.log(arguments.callee.name + ": " + hierarchie);
+	console.trace()
 	var nav_layer = document.getElementById(hierarchie);
 	if(display === true)
 	{
@@ -143,8 +144,9 @@ function manageButtons(element)
 	}
 	var nav_layers = current_nav_layer.parentElement;
 	
-	var button_hierarchie_level = g_hierarchien.indexOf(nav_layer.id) + 1; // Neue hierarchie ebene // TODO check hierarchie_level for -1
-	console.log(arguments.callee.name + ": Hierarchie level: " + button_hierarchie_level + " / Element Id: " + nav_layer.id + " / Button Id: " + element.id);	
+	console.log(current_nav_layer.id)
+	var button_hierarchie_level = g_hierarchien.indexOf(current_nav_layer.id) + 1; // Neue hierarchie ebene // TODO check hierarchie_level for -1
+	console.log(arguments.callee.name + ": Hierarchie level: " + button_hierarchie_level + " / Element Id: " + nav_layers.id + " / Button Id: " + element.id);	
 	if(button_hierarchie_level <  g_hierarchien.length) // Hierarchie-Stufe laden "else" Videos listen
 	{
 		// Videos wegräumen / neuer Nav-Pfad gewählt
@@ -176,7 +178,7 @@ function manageButtons(element)
 		addNavPath(nav_path, g_hierarchien[button_hierarchie_level], g_hierarchie_pfad[button_hierarchie_level-1], path_url_json);
 		var next_nav_layer = createNavLayer(nav_layers, g_hierarchien[button_hierarchie_level]);
 		
-		console.log(nav_layer);
+		console.log(nav_layers);
 		console.log(next_nav_layer);
 		console.log(element.id);
 		console.log(next_nav_layer.id);
@@ -214,8 +216,8 @@ function manageButtons(element)
 			selectButton(element, true); // toggle Button is not bound to stichwort_ids
 		}
 		// loadVideos(g_hierarchie, g_toggle_status);
+		console.log(arguments.callee.name + ": element " + element.id);
 		loadVideos(g_hierarchie_pfad, element.id);
-		console.log(arguments.callee.name + ": element" + element.id);
 	}
 }
 
@@ -346,6 +348,10 @@ function loadLayerButtons(parentElement, url_json)
 				parentElement.appendChild(elementButton);
 			}
 		}
+		else
+		{
+		        console.trace();
+		}
 	});
 }
 
@@ -361,6 +367,7 @@ function loadLayerButtons(parentElement, url_json)
 function addNavPath(parentElement, hierarchie, id, url_json)
 {
 	console.log("addNavPath",id);
+	console.trace()
 	fetchJson(url_json, function(status, json)
 	{
 		if( status === null)
@@ -447,7 +454,7 @@ function fetchJson(url, fetch_callback)
 	http_request.onload = function() {
 		var status = http_request.status;
 
-		if (status === 200 || status === 304)
+		if (status === 0 || status === 200 || status === 304)
 		{
 			fetch_callback(null, http_request.response);
 		}
