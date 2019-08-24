@@ -11,11 +11,15 @@
 // Klasse / Fach
 // Thema 
 
+
+
 var g_hierarchien = [ "Bundesland", "Schule", "Klasse", "Fach", "Thema", "Stichwort" ]; // hierarchie als linked list...
 var g_hierarchie_pfad = [];
 var g_nav_hierarchie = -1; /// Gibt aktuell angezeigte Hierarchie Ebene an. // TODO -1 für Wurzel? // TODO Rework Zählung der Hierarchie Ebenen
 
-//
+// Analyses permalink parameters
+// Refactor -> LoadButtons/ToggleButtons generiert aus g_hierarchie
+// Test -> g_hierarchien korrekt gesetzt. 
 function pageLoaded()
 {
 	var nav_layers = document.getElementById("nav_layers");
@@ -72,13 +76,15 @@ function pageLoaded()
 	g_nav_hierarchie = hierarchie;
 }
 
+// TODO
+// Alte nav_layers sind nicht angezeigt
 function showButtons(hierarchie, display)
 {
 	if(typeof display === "undefined")
 	{
 		display = true;
 	}
-	console.log(hierarchie);
+	console.log(arguments.callee.name + ": " + hierarchie);
 	var nav_layer = document.getElementById(hierarchie);
 	if(display === true)
 	{
@@ -90,90 +96,10 @@ function showButtons(hierarchie, display)
 	}
 }
 
-//
-function manageButtons(element)
-{
-	console.log(element)
-	console.log(g_hierarchie_pfad)
-// TODO Error handling
-//	if(hierarchie_level
-	var nav_path = document.getElementById("nav_path");
-	var nav_layer = element.parentElement;
-	if(nav_layer.tagName.toLowerCase() === "span") // span block of toggle buttons
-	{
-             nav_layer = nav_layer.parentElement;
-	}
-	var nav_layers = nav_layer.parentElement;
-	var hierarchie_level = g_hierarchien.indexOf(nav_layer.id) + 1; // Neue hierarchie ebene // TODO check hierarchie_level for -1
-	console.log("Hierarchie level: " + hierarchie_level + " / Element Id: " + nav_layer.id + " / Button Id: " + element.id);	
-	if(hierarchie_level <  g_hierarchien.length) // Hierarchien aufklappen oder Videos listen
-	{
-		var videos = document.getElementById("videos");
-		removeAllChildren(videos); // Videos wegräumen
-		var clean_nav_layer = nav_layer.previousElementSibling; // Darunterliegende Nav Layer entfernen
-		var next;
-		while(clean_nav_layer !== null)
-		{
-			next = clean_nav_layer.previousElementSibling
-			console.log("Entferne Layer mit ID: " + clean_nav_layer.id);
-			nav_layers.removeChild(clean_nav_layer);
-			clean_nav_layer = next;
-		}
-		
-		while(hierarchie_level <= g_hierarchie_pfad.length) // remove lower nav levels from hierarchie 
-		{
-			g_hierarchie_pfad.pop();
-			nav_path.removeChild(nav_path.lastElementChild);
-		}
-		console.log("manageButtons():", g_hierarchie_pfad);
-				
 
-		var [path_url_json, pfad] = resolveJsonUrl(g_hierarchie_pfad, "auswahl");
-		g_hierarchie_pfad.push(element.id);
-		addNavPath(nav_path, g_hierarchien[hierarchie_level], g_hierarchie_pfad[hierarchie_level-1], path_url_json);
-		var next_nav_layer = createNavLayer(nav_layers, g_hierarchien[hierarchie_level]);
-		console.log(nav_layer);
-		console.log(next_nav_layer);
-		console.log(element.id);
-
-		console.log(next_nav_layer.id);
-		var [url_json, pfad] = resolveJsonUrl(g_hierarchie_pfad, "auswahl");
-		if(hierarchie_level < (g_hierarchien.length-1))
-		{
-			loadLayerButtons(next_nav_layer, url_json);
-		}
-		else
-		{
-			loadToggleButtons(next_nav_layer, url_json);
-		}
-		
-		
-		if(hierarchie_level > 0) // Schadet nicht, auch bei Rückwärtsnavigation
-		{
-			showButtons(g_hierarchien[hierarchie_level-1], false);
-		}
-		showButtons(g_hierarchien[hierarchie_level]);
-		g_nav_hierarchie = hierarchie_level;
-		
-		updatePermalink(pfad);
-	}
-	else
-	{
-		// Toggle buttons
-		// Toggeln nur bei Toggle id
-		
-		{
-			// de toggle andere
-
-
-			selectButton(element, true); // toggle Button is not bound to stichwort_ids
-		}
-		// loadVideos(g_hierarchie, g_toggle_status);
-		loadVideos(g_hierarchie_pfad, element.id);
-	}
-}
-
+// Benutzen die Buttons im nav_path
 // hierarchie : Hierachie Ebene die angezeigt werden soll.
+// Test TODO
 function navButton(hierarchie)
 {
 	var hierarchie_level = 0;
@@ -196,6 +122,105 @@ function navButton(hierarchie)
 	g_nav_hierarchie = hierarchie_level;
 }
 
+
+
+// Benutzen die Buttons im nav_layer
+// Refactor -> LoadButtons/ToggleButtons generiert aus g_hierarchie
+// Test -> g_hierarchien korrekt gesetzt.
+// TODO Nav Layers vs Nav Layer
+function manageButtons(element)
+{
+	console.log(element)
+	console.log(g_hierarchie_pfad)
+	
+// TODO Error handling
+//	if(hierarchie_level
+	var nav_path = document.getElementById("nav_path");
+	var current_nav_layer = element.parentElement;
+	if(current_nav_layer.tagName.toLowerCase() === "span") // span block of toggle buttons // TODO what?
+	{
+             current_nav_layer = current_nav_layer.parentElement;
+	}
+	var nav_layers = current_nav_layer.parentElement;
+	
+	var button_hierarchie_level = g_hierarchien.indexOf(nav_layer.id) + 1; // Neue hierarchie ebene // TODO check hierarchie_level for -1
+	console.log(arguments.callee.name + ": Hierarchie level: " + button_hierarchie_level + " / Element Id: " + nav_layer.id + " / Button Id: " + element.id);	
+	if(button_hierarchie_level <  g_hierarchien.length) // Hierarchie-Stufe laden "else" Videos listen
+	{
+		// Videos wegräumen / neuer Nav-Pfad gewählt
+		var videos = document.getElementById("videos");
+		removeAllChildren(videos);
+		
+		// Darunterliegende Nav Layer entfernen // TODO removeAllChildren(nav_layers)?
+		var clean_nav_layer = current_nav_layer.previousElementSibling; 
+		var next;
+		while(clean_nav_layer !== null)
+		{
+			next = clean_nav_layer.previousElementSibling
+			console.log("Entferne Layer mit ID: " + clean_nav_layer.id);
+			nav_layers.removeChild(clean_nav_layer);
+			clean_nav_layer = next;
+		}
+		
+		// Remove lower nav levels from hierarchie -> Besser alles ab Nav level entfernen
+		while(button_hierarchie_level <= g_hierarchie_pfad.length)
+		{
+			g_hierarchie_pfad.pop();
+			nav_path.removeChild(nav_path.lastElementChild);
+		}
+				
+
+		// Neuen Nav level aus JSON in den nav_path laden
+		var [path_url_json, pfad] = resolveJsonUrl(g_hierarchie_pfad, "auswahl");
+		g_hierarchie_pfad.push(element.id);
+		addNavPath(nav_path, g_hierarchien[button_hierarchie_level], g_hierarchie_pfad[button_hierarchie_level-1], path_url_json);
+		var next_nav_layer = createNavLayer(nav_layers, g_hierarchien[button_hierarchie_level]);
+		
+		console.log(nav_layer);
+		console.log(next_nav_layer);
+		console.log(element.id);
+		console.log(next_nav_layer.id);
+		
+		// Neue Buttons in den nav_layer laden
+		var [url_json, pfad] = resolveJsonUrl(g_hierarchie_pfad, "auswahl");
+		if(button_hierarchie_level < (g_hierarchien.length-1))
+		{
+			loadLayerButtons(next_nav_layer, url_json);
+		}
+		else
+		{
+			loadToggleButtons(next_nav_layer, url_json);
+		}
+		
+		if(button_hierarchie_level > 0) // Schadet nicht, auch bei Rückwärtsnavigation
+		{
+			showButtons(g_hierarchien[button_hierarchie_level-1], false);
+		}
+		
+		
+		showButtons(g_hierarchien[button_hierarchie_level]);
+		g_nav_hierarchie = button_hierarchie_level;
+		updatePermalink(pfad);
+	}
+	else // Videos listen
+	{
+		// Toggle buttons
+		// Toggeln nur bei Toggle id
+		
+		{
+			// de toggle andere
+
+
+			selectButton(element, true); // toggle Button is not bound to stichwort_ids
+		}
+		// loadVideos(g_hierarchie, g_toggle_status);
+		loadVideos(g_hierarchie_pfad, element.id);
+		console.log(arguments.callee.name + ": element" + element.id);
+	}
+}
+
+
+// TODO
 function selectButton(element, selected)
 {
 	if(selected == true)
@@ -208,9 +233,12 @@ function selectButton(element, selected)
 	}
 }
 
-
+// Updates permalink with given pfad
+// Test -> Random Nav then hover permalink
 function updatePermalink(pfad)
 {
+	console.log(arguments.callee.name + ": Pfad: " + pfad);
+
 	var permalink = document.getElementById("permalink");
 	var link = permalink.firstElementChild
 	if (link === null)
@@ -227,6 +255,8 @@ function updatePermalink(pfad)
 // TODO REWORK!!!!// TODO REWORK!!!!// TODO REWORK!!!!// TODO REWORK!!!!// TODO REWORK!!!!// TODO REWORK!!!!
 
 
+// Lädt ein Video-Playliste und setzt damit das Element "video" neu
+// Test TODO
 function loadVideos(hierarchie, stichwort_id)
 {
 	console.log("loadVideos "  + stichwort_id);
@@ -243,8 +273,6 @@ function loadVideos(hierarchie, stichwort_id)
 	{
 		if( status === null)
 		{
-	
-			var body = document.getElementById("body");
 	
 			var items = response.items;
 			video_ids = [];
@@ -263,7 +291,189 @@ function loadVideos(hierarchie, stichwort_id)
 }
 
 
-//
+// Erzeugt aus einer Youtube-Id eine DIV-Sektion mit iFrames
+// Test TODO
+function createVideoElements(video_list)
+{
+	var videos = document.createElement('div');
+	videos.id = "videos";
+	for(num in video_list)
+	{
+		var youtube_id = video_list[num];
+		var youtube_element =  document.createElement('div');
+		var youtube_iframe = "<iframe src=\"";
+		youtube_iframe += "https://www.youtube-nocookie.com/embed/" + youtube_id + "?rel=0\"";
+		youtube_iframe += "frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe>";
+		youtube_element.innerHTML = youtube_iframe;
+		youtube_element = youtube_element.firstChild;
+		youtube_element.id = "video";
+		videos.appendChild(youtube_element);
+	}
+//	console.log(youtube_iframe);
+	return videos;
+}
+
+
+// Erzeuge Buttons mit Toggle-Funktion aus den Daten vom JSON
+// Test -> No / Usage
+function loadToggleButtons(parentElement, url_json)
+{
+	fetchJson(url_json, function(status, json)
+	{
+		if( status === null)
+		{
+
+			for(element in json)
+			{
+				var element_button = createButton(element, json[element], "success_not_selected");
+				parentElement.appendChild(element_button);
+			}
+		}
+	});
+}
+
+// Erzeuge Standard-Buttons aus JSON (für den Nav-Layer)
+// Test -> No / Usage
+function loadLayerButtons(parentElement, url_json)
+{
+	fetchJson(url_json, function(status, json)
+	{
+		if( status === null)
+		{
+			for(element in json)
+			{
+				var elementButton = createButton(element, json[element]);
+				parentElement.appendChild(elementButton);
+			}
+		}
+	});
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+
+// HELPER
+
+// TODO JSON cache?
+
+// Button im Nav Path
+// Ist immer eins hinten dran iaw id
+// Test TODO
+function addNavPath(parentElement, hierarchie, id, url_json)
+{
+	console.log("addNavPath",id);
+	fetchJson(url_json, function(status, json)
+	{
+		if( status === null)
+		{
+			for(element in json)
+			{
+				if(json[element] === id)  // find element
+				{
+					var elementButton = createButton(element, id, "nav_path", "navButton(\"" + hierarchie + "\")");
+					parentElement.appendChild(elementButton);
+					break;
+				}
+			}
+		}
+	});
+	
+	
+}
+
+// Nav Select layer -> Für jede navigation neu
+// InsertBefore
+// Test TODO
+function createNavLayer(parentElement, id)
+{
+	var nav_layer = document.createElement("div");
+	nav_layer.id = id;
+	nav_layer.setAttribute("class", "nav_layer");
+	nav_layer.style.display = "none";
+	parentElement.insertBefore(nav_layer, parentElement.firstElementChild);
+	
+	return nav_layer;
+}
+
+
+// Erzeugt einen Button mit Text, Id, Class und Function gesetzt
+// Test -> No
+function createButton(label, id, className, functionName)
+{
+	var button = document.createElement("button");
+	var text = document.createTextNode(label);
+	if( typeof className === "undefined" )
+	{
+		className = "success";
+	}
+	if( typeof functionName === "undefined" )
+	{
+		functionName = "manageButtons(this)";
+	}
+	button.id = id;
+	button.setAttribute("onclick", functionName);
+	button.appendChild(text);
+	button.className = className;
+	return button;
+}
+
+
+// Generiere Pfad-Hierarchie für die JSON-Dateien
+// Test -> No
+function resolveJsonUrl(hierarchie, name)
+{
+	var base = "db";
+	var url = base;
+	var pfad = "";
+
+	for(schicht in hierarchie)
+	{
+		pfad += "/" + hierarchie[schicht];
+		
+	}
+	url += pfad + "/" + name + ".json";
+
+	return [url, pfad];
+}
+
+// Fetch JSON-Datei für Callback
+// Test -> No
+// super seed with fetch() in near future
+// implement caching for jsons?
+function fetchJson(url, fetch_callback)
+{
+	var http_request = new XMLHttpRequest();
+	http_request.open('GET', url, true);
+	http_request.responseType = 'json';
+	http_request.onload = function() {
+		var status = http_request.status;
+
+		if (status === 200 || status === 304)
+		{
+			fetch_callback(null, http_request.response);
+		}
+		else
+		{
+			fetch_callback(status, http_request.response);
+		}
+	};
+	http_request.send(); // non-blocking? // trigger callbacks when completed
+};
+
+// Macht wie es heißt
+// Test -> No
+function removeAllChildren(element)
+{
+	var cloned_node = element.cloneNode(false);
+	element.parentElement.replaceChild(cloned_node ,element);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////
+
+// U..N..U..S..E..D
+
+
+// TODO
 function makeList(stichwort_ids, videos_json, stichwort_json)
 {
 	var video_ids_pro_stichwort = []
@@ -322,207 +532,5 @@ function makeList(stichwort_ids, videos_json, stichwort_json)
 	return list;
 }
 
-//
-function createVideoElements(video_list)
-{
-	var videos = document.createElement('div');
-	videos.id = "videos";
-	for(num in video_list)
-	{
-		var youtube_id = video_list[num];
-		var youtube_element =  document.createElement('div');
-		var youtube_iframe = "<iframe src=\"";
-		youtube_iframe += "https://www.youtube-nocookie.com/embed/" + youtube_id + "?rel=0\"";
-		youtube_iframe += "frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe>";
-		youtube_element.innerHTML = youtube_iframe;
-		youtube_element = youtube_element.firstChild;
-		youtube_element.id = "video";
-		videos.appendChild(youtube_element);
-	}
-//	console.log(youtube_iframe);
-	return videos;
-}
 
-
-//
-function loadToggleButtons(parentElement, url_json)
-{
-	fetchJson(url_json, function(status, json)
-	{
-		if( status === null)
-		{
-
-			for(element in json)
-			{
-				var element_button = createButton(element, json[element], "success_not_selected");
-				parentElement.appendChild(element_button);
-			}
-		}
-	});
-}
-
-//
-function loadLayerButtons(parentElement, url_json)
-{
-	fetchJson(url_json, function(status, json)
-	{
-		if( status === null)
-		{
-			for(element in json)
-			{
-				var elementButton = createButton(element, json[element]);
-				parentElement.appendChild(elementButton);
-			}
-		}
-	});
-}
-
-////////////////////////////////////////////////////////////////////////////////////
-
-// HELPER
-
-// TODO JSON cache?
-
-// Nav Path ist immer eins hintendran iaw id
-function addNavPath(parentElement, hierarchie, id, url_json)
-{
-	console.log("addNavPath",id);
-	fetchJson(url_json, function(status, json)
-	{
-		if( status === null)
-		{
-			for(element in json)
-			{
-				if(json[element] === id)  // find element
-				{
-					var elementButton = createButton(element, id, "nav_path", "navButton(\"" + hierarchie + "\")");
-					parentElement.appendChild(elementButton);
-					break;
-				}
-			}
-		}
-	});
-	
-	
-}
-
-function createNavLayer(parentElement, id)
-{
-	var nav_layer = document.createElement("div");
-	nav_layer.id = id;
-	nav_layer.setAttribute("class", "nav_layer");
-	nav_layer.style.display = "none";
-	parentElement.insertBefore(nav_layer, parentElement.firstElementChild);
-	
-	return nav_layer;
-}
-
-
-//
-function createButton(label, id, className, functionName)
-{
-	var button = document.createElement("button");
-	var text = document.createTextNode(label);
-	if( typeof className === "undefined" )
-	{
-		className = "success";
-	}
-	if( typeof functionName === "undefined" )
-	{
-		functionName = "manageButtons(this)";
-	}
-	button.id = id;
-	button.setAttribute("onclick", functionName);
-	button.appendChild(text);
-	button.className = className;
-	return button;
-}
-
-function resolveJsonUrl(hierarchie, name)
-{
-	var base = "db";
-	var url = base;
-	var pfad = "";
-
-	for(schicht in hierarchie)
-	{
-		pfad += "/" + hierarchie[schicht];
-		
-	}
-	url += pfad + "/" + name + ".json";
-
-	return [url, pfad];
-}
-
-// super seed with fetch() in near future
-// implement caching for jsons?
-function fetchJson(url, fetch_callback)
-{
-	var http_request = new XMLHttpRequest();
-	http_request.open('GET', url, true);
-	http_request.responseType = 'json';
-	http_request.onload = function() {
-		var status = http_request.status;
-
-		if (status === 200 || status === 304)
-		{
-			fetch_callback(null, http_request.response);
-		}
-		else
-		{
-			fetch_callback(status, http_request.response);
-		}
-	};
-	http_request.send(); // non-blocking? // trigger callbacks when completed
-};
-
-function removeAllChildren(element)
-{
-	var cloned_node = element.cloneNode(false);
-	element.parentElement.replaceChild(cloned_node ,element);
-}
-////////////////////////////////////////////////////////////////////////////////////
-
-// Garbage
-
-//
-function myFunction(id)
-{
-	window.confirm("Status: " + id );
-	url="db/auswahl-schule.json"
-	function fetchCallback (err, json) // not thread safe?
-	{		
-	  if (err === null) {
-	    alert('Your query count: ' + json["Bundesländer"]["Bayern"]);
-	  } else {
-	    alert('Something went wrong: ' + err);
-	  }
-	}
-	fetchJson(url, fetchCallback);
-}
-
-//
-function toggleSuccess(element)
-{
-	var attr = element.getAttributeNode("class")
-	if(attr.value == "success")
-	{
-		attr.value = "success_select";
-	}
-	else
-	{
-		attr.value = "success";
-	}
-}
-
-//
-function getSubElementById(parent_element, id) {
-	for(child_element of parent_element.children)
-	{
-		if(child_element.id == id)
-		{
-			return child_element;
-		}
-	}
-}
 
