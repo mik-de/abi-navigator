@@ -1,0 +1,9 @@
+{
+	"Elektrische Feld" : "e_feld",
+	"Magnetische Feld" : "h_feld",
+        "Bewegte Ladung" : "move",
+        "Relativitätstheorie" : "relativ",
+        "Magnetische Induktion" : "indu",
+        "Schwingungen & Wellen" : "schwing"
+}
+
